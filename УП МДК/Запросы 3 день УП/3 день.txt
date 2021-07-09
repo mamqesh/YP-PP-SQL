@@ -1,0 +1,67 @@
+-- 1. Найти всех студентов и вывести их оценки за экзамен.
+Use University
+Go
+Select GradeBook, FamilyStudent, NameStudent, PatronymicStudent, NameExam, AppraisalExam  from Student, Exam
+Where GradeBook=GradeBookID
+if @@ROWCOUNT=0
+print 'Ошибка.'
+
+-- 2. Найти учителей, которые предлагают темы для диплома.
+Use University
+Go
+Select TeacherID, NameTeacher, FamilyTeacher, PatronymicTeacher, Topic  from Teacher, Topic 
+Where Teacher=TeacherID
+if @@ROWCOUNT=0
+print 'Ошибка.'
+
+-- 3. Вывести всех студентов и их оценки за диплом.
+Use University
+Go
+Select GradeBookID, FamilyStudent, NameStudent, PatronymicStudent, AppraisalDiplom from Student, DiplomMark
+Where GradeBook=GradeBookID
+if @@ROWCOUNT=0
+print 'Ошибка.'
+
+-- 4. Вывести студентов и количество сдаваемых экзаменов.
+Use University
+Go
+Select NameStudent, FamilyStudent, PatronymicStudent, Count(Exam.ExamID) as Result from Student, Exam
+Where GradeBook=GradeBookID
+Group by NameStudent,FamilyStudent, PatronymicStudent
+If @@ROWCOUNT = 0
+Print 'Таких студентов нет.'
+
+--Найти группы, количество которых превышают 3
+Use University
+Go
+Select  [Group], Count(GradeBookID) as Result from Student 
+Group by [Group]
+Having Count(GradeBookID)>3
+If @@rowcount = 0
+Print 'Ошибка'
+
+-- 6. Вывести количество предлогаемых тем у каждого преподавателя.
+Use University
+Go
+Select FamilyTeacher, NameTeacher, PatronymicTeacher, Count(Topic.Teacher) as Result from Teacher, Topic
+Where Teacher=TeacherID
+Group by Topic.Teacher, FamilyTeacher, NameTeacher, PatronymicTeacher
+
+-- 7. Вывести студентов и их оценки за дипломную работу с использованием сортировки.
+Use University
+Go
+Select FamilyStudent, NameStudent, PatronymicStudent, AppraisalDiplom from Student, DiplomMark
+Where GradeBook=GradeBookID
+Order by AppraisalDiplom
+if @@ROWCOUNT=0
+print 'Ошибка.'
+
+-- 8. Вывести студентов и их оценки за экзамен с использованием сортировки.
+Use University
+Go
+Select FamilyStudent, NameStudent, PatronymicStudent, NameExam, AppraisalExam from Student, Exam
+Where GradeBook=GradeBookID
+Order by AppraisalExam
+if @@ROWCOUNT=0
+print 'Ошибка.'
+

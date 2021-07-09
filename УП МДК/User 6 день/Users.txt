@@ -1,0 +1,54 @@
+Use University
+Go
+Create login Adm with password = 'Adm123' 
+Create user AdmUser for login Adm -- создание админа, доступ ко всему
+
+Create login Director with password = 'Director123'
+Create user DirectorUser for login Director -- создание директора, может только просматривать
+
+Create login HumanResourcesDepartment with password = 'HumanResourcesDepartment123'
+Create user HumanResourcesDepartmentUser for login HumanResourcesDepartment --создание доступа для отдела кадров, могут добавлять новых студентов
+
+
+Create login Teacher with password = 'Teacher123'
+Create user TeacherUser for login Teacher -- создание учителя, доступ к оценкам за диплом и экзамены.
+
+Grant select on DiplomMark to AdmUser -- полный доступ админу
+Grant select on DiplomMark to AdmUser
+Grant delete on DiplomMark to AdmUser 
+Grant update on DiplomMark to AdmUser
+Grant insert on Exam to AdmUser 
+Grant select on Exam to AdmUser 
+Grant delete on Exam to AdmUser 
+Grant update on Exam to AdmUser
+Grant insert on Faculty to AdmUser 
+Grant select on Faculty to AdmUser 
+Grant delete on Faculty to AdmUser 
+Grant update on Faculty to AdmUser
+Grant insert on Student to AdmUser 
+Grant select on Student to AdmUser 
+Grant delete on Student to AdmUser 
+Grant update on Student to AdmUser
+Grant insert on Teacher to AdmUser 
+Grant select on Teacher to AdmUser 
+Grant delete on Teacher to AdmUser 
+Grant update on Teacher to AdmUser
+Grant insert on Topic to AdmUser 
+Grant select on Topic to AdmUser 
+Grant delete on Topic to AdmUser 
+Grant update on Topic to AdmUser
+Grant select on DiplomMark to DirectorUser --просмотр для директора
+Grant select on Exam to DirectorUser
+Grant select on Faculty to DirectorUser
+Grant select on Student to DirectorUser
+Grant select on Teacher to DirectorUser
+Grant select on Topic to DirectorUser
+Grant update on Student to HumanResourcesDepartmentUser --добавление и изменения студетов, отдел кадров
+Grant insert on Student to HumanResourcesDepartmentUser
+Grant select on Student to HumanResourcesDepartmentUser
+Grant update on Exam to TeacherUser --доступ учителей для добавления и изменения оценок
+Grant select on Exam to TeacherUser
+Grant select on DiplomMark to TeacherUser
+Grant insert on Exam to TeacherUser
+Grant update on DiplomMark to TeacherUser
+Grant insert on DiplomMark to TeacherUser

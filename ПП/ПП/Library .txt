@@ -1,0 +1,45 @@
+Create database [Library] 
+Go
+Use [Library]
+Go
+Create table Reader
+(
+ReaderID int primary key,
+SurnameRader varchar(30),
+NameRader varchar(30),
+PatronymicReader varchar(30),
+[Address] varchar(60),
+Phone varchar(20),
+)
+Create table Autor
+(
+AutorID int primary key,
+SurnameAutor varchar(30),
+NameAutor varchar(30),
+PatronymicAutor varchar(30),
+)
+Create table Publisher
+(
+PublisherID int primary key,
+NamePublisher varchar(60),
+CityPublisher varchar(60),
+)
+Create table Book
+(
+BookID int primary key,
+NameBook varchar(30),
+Font varchar(30),
+Autor int,
+Foreign key (Autor) references Autor(AutorID),
+Publisher int,
+Foreign key (Publisher) references Publisher(PublisherID),
+)
+Create table Issuance
+(
+IssuanceID int primary key,
+Book int,
+Foreign key (Book) references Book(BookID),
+Reader int,
+Foreign key (Reader) references Reader(ReaderID),
+IssuanceDate date,
+)

@@ -1,0 +1,105 @@
+1. Оператор сравнения.
+
+/* Вывести студентов у кого дипломная оценка 4. */
+Use University
+Go 
+Declare @Mark int = '4'
+Select FamilyStudent, NameStudent, PatronymicStudent, AppraisalDiplom  from DiplomMark, Student
+Where AppraisalDiplom = @Mark and GradeBook=GradeBookID
+If @@ROWCOUNT=0
+Print 'Таких студентов нет'
+
+
+
+
+2.1 Составное логическое выражение.
+
+/* Выбрать студентов которые получили оценку за диплом 4 и 5 */
+Use University
+Go 
+Declare @Mark1 int = '4'
+Declare @Mark2 int = '5'
+Select FamilyStudent, NameStudent, PatronymicStudent, AppraisalDiplom  from DiplomMark, Student
+Where (GradeBook=GradeBookID and AppraisalDiplom = @Mark1) or (AppraisalDiplom = @Mark2 and GradeBook=GradeBookID)
+If @@ROWCOUNT=0
+Print 'Таких студентов нет'
+
+2.2
+
+/* Найти студентов из одной группы с одинаковой оценкой */
+Use University
+Go 
+Declare @Mark int = 4
+Declare @Group int = 100
+Select FamilyStudent, NameStudent, PatronymicStudent, [Group], AppraisalDiplom from DiplomMark, Student
+Where (GradeBook=GradeBookID and AppraisalDiplom = @Mark) and ([Group] = @Group and GradeBook=GradeBookID)
+If @@ROWCOUNT = 0
+print 'Таких студентов нет.'
+
+3.1 Вычисляемое поле.
+
+/*Найти количество студентов в группе*/
+Use University
+Go
+Declare @Group int = 100
+Select  [Group], Count(GradeBookID) as Result from Student 
+Where [Group]=@Group
+Group by [Group]
+If @@rowcount = 0
+Print 'Группы не существует'
+
+3.2 
+
+/*Найти количество студентов которые не сдали экзамен*/
+Use University
+Go
+Declare @Mark int = 2
+Select Count(GradeBookID) as result from Student, Exam
+Where GradeBookID=GradeBook and AppraisalExam=@Mark
+Group by GradeBook
+If @@ROWCOUNT = 0
+Print 'Таких студентов нет.'
+
+4.1 Принадлежность множеству значений.
+
+/* Найти студентов 1993.01.01 до 1997.01.01 */
+Use University
+Go 
+Declare @Born1 date = '1993.01.01'
+Declare @Born2 date = '1997.01.01' 
+Select GradeBookID, NameStudent, FamilyStudent, PatronymicStudent, Born from Student
+Where Born between @Born1 and @Born2
+if @@ROWCOUNT=0
+print 'Таких студентов нет, либо данные введены не верно.'
+
+4.2 
+
+/* Найти зачетные книги с 10031 до 10033 и имена их владельцев*/
+Use University
+Go 
+Declare @Book1 int = 10031
+Declare @Book2 int = 10033
+Select GradeBookID, NameStudent, FamilyStudent, PatronymicStudent, [Group] from Student
+Where GradeBookID between @Book1 and @Book2
+If @@ROWCOUNT = 0
+Print 'Таких зачетных книг нет.'
+
+5. Соответствие шаблона.
+
+/* Найдите мужчин из преподавательского состава  */
+Use University
+Go 
+Select NameTeacher, FamilyTeacher, PatronymicTeacher, Phone from Teacher
+Where PatronymicTeacher Like'%ич'
+if @@ROWCOUNT=0
+print 'Нет результата'
+
+6. Не определенное значение 
+
+/*Найти тех учителей, у кого нет номера телефона*/ 
+Use University
+Go 
+Select NameTeacher, FamilyTeacher, PatronymicTeacher, Phone from Teacher
+Where Phone is null 
+if @@ROWCOUNT=0
+Print 'Не найдено.'

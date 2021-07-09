@@ -1,0 +1,43 @@
+/*Найти количество студентов в группе*/
+Use University
+Go
+Declare @Group int = 100
+Select  [Group], Count(GradeBookID) as Result from Student 
+Where [Group]=@Group
+Group by [Group]
+If @@rowcount = 0
+Print 'Группы не существует'
+
+/*Найти количество студентов которые не сдали экзамен*/
+Use University
+Go
+Declare @Mark int = 2
+Select Count(GradeBookID) as result from Student, Exam
+Where GradeBookID=GradeBook and AppraisalExam=@Mark
+Group by GradeBook
+If @@ROWCOUNT = 0
+Print 'Таких студентов нет.'
+
+/*Найти тех учителей, у кого нет номера телефона*/ 
+Use University
+Go 
+Select NameTeacher, FamilyTeacher, PatronymicTeacher, Phone from Teacher
+Where Phone is null 
+if @@ROWCOUNT=0
+Print 'Не найдено.'
+
+/* Найти всех студентов и вывести их оценки за экзамен */
+Use University
+Go
+Select GradeBook, FamilyStudent, NameStudent, PatronymicStudent, NameExam, AppraisalExam  from Student, Exam
+Where GradeBook=GradeBookID
+if @@ROWCOUNT=0
+print 'Ошибка.'
+
+/* Найти учителей, которые предлагают темы для диплома. */
+Use University
+Go
+Select TeacherID, NameTeacher, FamilyTeacher, PatronymicTeacher, Topic  from Teacher, Topic 
+Where Teacher=TeacherID
+if @@ROWCOUNT=0
+print 'Ошибка.'

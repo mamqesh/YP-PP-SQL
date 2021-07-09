@@ -1,0 +1,82 @@
+Use Equipment
+GO
+-- ВЫВЕСТИ ВСЕ ЗАКАЗЫ И ИХ СУММУ
+Create procedure AllOrder as
+Begin
+Select NameProduct, FamilyCustomer,NameCustomer,PatronimycCustomer, Amount*Price from Customer, [Order], Product
+Where Customer=CustomerID and Product=ProductID
+End
+Go
+--ВЫВЕСТИ ЗАКАЗЧИКОВ, КТО НЕ УКАЗАЛ НОМЕР ТЕЛЕФОНА ИЛИ АДРЕС
+Create procedure NoPhoneOrAddress 
+as
+Begin
+Select  FamilyCustomer, NameCustomer, PatronimycCustomer, Phone, [Address] from Customer, [Order]
+Where (Phone is null or [Address] is null) and CustomerID=Customer 
+End
+Go
+--ВЫВЕСТИ ВСЕ ЗАКАЗЫ НА УКАЗАННЫЙ АДРЕС
+Create procedure OrderAddress
+@Address varchar(100) as
+Begin
+Select  Phone, [Address], Amount, NameProduct from Customer, [Order], Product
+Where CustomerID=Customer and ProductID=Product and [Address]=@Address
+If @@ROWCOUNT = 0
+Print 'Адрес введен не верно. Проверьте данные.'
+End
+Go
+--ВЫВЕСТИ АДРЕС ЗАКАЗЧИКА ПО ПАСПОРТУ
+Create procedure PassDataOrder
+@PassData varchar(50) as
+Begin
+Select FamilyCustomer, NameCustomer, PatronimycCustomer, [Address], NameProduct, Amount from [Order], Customer, Product
+Where PassportData=@PassData and Customer=CustomerID and Product=ProductID
+If @@ROWCOUNT=0
+Print 'Ошибка. Данные введены не верно.'
+End
+Go
+--ВЫВЕДИТЕ ЦЕНУ ТОВАРА И ГОСТ ПО НАЗВАНИЮ
+Create procedure InfoProduct
+@ProductN varchar(100) as 
+Begin
+Select NameProduct, GOSTID, Price from Product, GOST
+Where NameProduct=@ProductN and GOSTID=GOST
+If @@ROWCOUNT=0
+Print 'Ошибка. Данные введены неверно'
+End
+Go
+-- ДОБАВИТЬ ТОВАР
+Create procedure AddProduct 
+@NameProduct varchar(100),
+@Movable varchar(5),
+@DrawingNumber varchar(20),
+@GOST int,
+@Price money as
+Begin
+Insert into Product(NameProduct, Movable, DrawingNumber, GOST, Price) values
+(@NameProduct, @Movable, @DrawingNumber, @GOST, @Price) 
+End
+Go
+-- ДОБАВИТЬ ЗАКАЗ
+Create procedure AddOrder
+@ProductID int,
+@CustomerID int,
+@Amount int,
+@Address varchar (100) as
+Begin
+Insert into [Order](Product, Customer, Amount, [Address]) values
+(@ProductID, @CustomerID, @Amount, @Address)
+End
+Go
+-- ДОБАВИТЬ ЗАКАЗЧИКА
+Create procedure AddCustomer 
+@Family varchar(50),
+@Name varchar(50),
+@Patronimyc varchar(50),
+@Pass varchar(20),
+@Phone varchar(20) as
+Begin
+Insert into Customer(FamilyCustomer, NameCustomer, PatronimycCustomer, PassportData, Phone) values
+(@Family, @Name, @Patronimyc, @Pass, @Phone) 
+End
+Go
